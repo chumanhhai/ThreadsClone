@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var userSession: UserSession
+    
     var body: some View {
-//        LoginView()
-        ProfileView()
+        if userSession.user == nil {
+            LoginView()
+        } else {
+            ThreadsTabBarView()
+        }
     }
 }
 

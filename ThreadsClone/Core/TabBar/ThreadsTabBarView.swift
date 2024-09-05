@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ThreadsTabBarItem: Int, CaseIterable, Identifiable {
+enum ThreadsTabBarItem: Int, CaseIterable, Identifiable, Equatable {
     case home, search, createThread, activity, profile
     
     var id: Int {
@@ -48,20 +48,32 @@ enum ThreadsTabBarItem: Int, CaseIterable, Identifiable {
 
 struct ThreadsTabBarView: View {
     @State private var selectedTab: ThreadsTabBarItem = .home
+    @State private var previousTab: ThreadsTabBarItem = .home
+    @State private var showCreateThread = false
     
     var body: some View {
-        return TabView(selection: $selectedTab) {
+        TabView(selection: $selectedTab) {
             ForEach(ThreadsTabBarItem.allCases, id: \.self) { item in
                 item.view
                     .tabItem {
                         Image(systemName: item.image)
                     }
-                    .onAppear {
-                        selectedTab = item
-                    }
             }
         }
         .tint(.black)
+        .onChange(of: selectedTab) { _ in
+            if selectedTab == .createThread {
+                selectedTab = previousTab
+                showCreateThread = true
+            } else {
+                previousTab = selectedTab
+            }
+        }
+        .sheet(isPresented: $showCreateThread, onDismiss: {
+            showCreateThread = false
+        }, content: {
+            CreateThreadView()
+        })
     }
 }
 

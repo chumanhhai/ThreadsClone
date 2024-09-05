@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var firstName = ""
-    @State private var lastName = ""
+    @StateObject var viewModel = RegisterViewModel()
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var userSession: UserSession
     
     var body: some View {
         NavigationStack {
@@ -26,28 +24,33 @@ struct RegisterView: View {
                     .padding()
                 
                 VStack {
-                    TextField("Enter your email", text: $email)
+                    TextField("Enter your email", text: $viewModel.email)
                         .autocapitalization(.none)
                         .modifier(TCTextFieldModifier())
                     
-                    SecureField("Enter your password", text: $password)
+                    SecureField("Enter your password", text: $viewModel.password)
                         .modifier(TCTextFieldModifier())
                     
-                    TextField("Enter your first name", text: $firstName)
+                    TextField("Enter your full name", text: $viewModel.fullname)
                         .autocapitalization(.none)
                         .modifier(TCTextFieldModifier())
                     
-                    TextField("Enter your last name", text: $lastName)
+                    TextField("Enter your username", text: $viewModel.username)
                         .autocapitalization(.none)
                         .modifier(TCTextFieldModifier())
                 }
                 
                 Button {
-                    
+                    Task {
+                        do {
+                            try await viewModel.createUser()
+                        } catch {
+                            print("DEBUG: \(error.localizedDescription)")
+                        }
+                    }
                 } label: {
                     Text("Sign up")
                         .modifier(TCPrimaryButtonModifier())
-                        
                 }
                 
                 Spacer()
@@ -66,8 +69,6 @@ struct RegisterView: View {
                 }
                 .foregroundColor(.black)
                 .padding(.vertical)
-                
-                
             }
         }
     }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject var viewModel = LoginViewModel()
+    @EnvironmentObject var userSession: UserSession
     
     var body: some View {
         NavigationStack {
@@ -23,11 +23,11 @@ struct LoginView: View {
                     .padding()
                 
                 VStack {
-                    TextField("Enter your email", text: $email)
+                    TextField("Enter your email", text: $viewModel.email)
                         .autocapitalization(.none)
                         .modifier(TCTextFieldModifier())
                     
-                    SecureField("Enter your password", text: $password)
+                    SecureField("Enter your password", text: $viewModel.password)
                         .modifier(TCTextFieldModifier())
                 }
                 
@@ -44,7 +44,13 @@ struct LoginView: View {
                 }
                 
                 Button {
-                    
+                    Task {
+                        do {
+                            try await viewModel.login()
+                        } catch {
+                            print("DEBUG: \(error.localizedDescription)")
+                        }
+                    }
                 } label: {
                     Text("Login")
                         .modifier(TCPrimaryButtonModifier())
