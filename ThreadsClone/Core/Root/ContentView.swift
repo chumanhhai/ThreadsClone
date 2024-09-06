@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var userSession: UserSession
+    @EnvironmentObject var userSessionManager: UserSessionManager
     
     var body: some View {
-        if userSession.user == nil {
-            LoginView()
+        let isLoggedIn = userSessionManager.userSession != nil
+        let isRequiredDataAvailable = userSessionManager.user != nil
+        if isLoggedIn {
+            if isRequiredDataAvailable {
+                ThreadsTabBarView()
+            } else {
+                TCSplashView()
+            }
         } else {
-            ThreadsTabBarView()
+            LoginView()
         }
     }
 }

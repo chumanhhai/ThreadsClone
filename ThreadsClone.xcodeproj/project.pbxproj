@@ -31,8 +31,11 @@
 		BABE205B2C899C990066985C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BABE205A2C899C990066985C /* FirebaseStorage */; };
 		BABE205E2C899ECE0066985C /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE205D2C899ECE0066985C /* RegisterViewModel.swift */; };
 		BABE20602C899F620066985C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE205F2C899F620066985C /* AuthService.swift */; };
-		BABE20622C89A99C0066985C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE20612C89A99C0066985C /* UserSession.swift */; };
+		BABE20622C89A99C0066985C /* UserSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE20612C89A99C0066985C /* UserSessionManager.swift */; };
 		BABE20642C89AE980066985C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE20632C89AE980066985C /* LoginViewModel.swift */; };
+		BABE211A2C8AE27C0066985C /* TCUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21192C8AE27C0066985C /* TCUser.swift */; };
+		BABE211F2C8AE3880066985C /* TCSplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE211E2C8AE3880066985C /* TCSplashView.swift */; };
+		BABE21212C8AE7390066985C /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21202C8AE7390066985C /* UserService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,8 +61,11 @@
 		BABE20532C899B810066985C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BABE205D2C899ECE0066985C /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		BABE205F2C899F620066985C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		BABE20612C89A99C0066985C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		BABE20612C89A99C0066985C /* UserSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSessionManager.swift; sourceTree = "<group>"; };
 		BABE20632C89AE980066985C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		BABE21192C8AE27C0066985C /* TCUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCUser.swift; sourceTree = "<group>"; };
+		BABE211E2C8AE3880066985C /* TCSplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCSplashView.swift; sourceTree = "<group>"; };
+		BABE21202C8AE7390066985C /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +143,7 @@
 		BABE1F5A2C81AC0D0066985C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				BABE211B2C8AE3660066985C /* Splash */,
 				BABE1F7B2C81E1990066985C /* Activity */,
 				BABE1F782C81E1990066985C /* CreateThread */,
 				BABE1F752C81E1990066985C /* Profile */,
@@ -159,7 +166,8 @@
 		BABE1F5C2C81AC2C0066985C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BABE20612C89A99C0066985C /* UserSession.swift */,
+				BABE20612C89A99C0066985C /* UserSessionManager.swift */,
+				BABE21192C8AE27C0066985C /* TCUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -168,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				BABE205F2C899F620066985C /* AuthService.swift */,
+				BABE21202C8AE7390066985C /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -330,6 +339,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		BABE211B2C8AE3660066985C /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				BABE211E2C8AE3880066985C /* TCSplashView.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -413,14 +430,17 @@
 				BABE1F722C81E0F30066985C /* FeedView.swift in Sources */,
 				BABE1FDD2C8859B30066985C /* EditProfileView.swift in Sources */,
 				BABE20602C899F620066985C /* AuthService.swift in Sources */,
+				BABE211F2C8AE3880066985C /* TCSplashView.swift in Sources */,
+				BABE211A2C8AE27C0066985C /* TCUser.swift in Sources */,
 				BABE1F7F2C81E1990066985C /* ProfileView.swift in Sources */,
+				BABE21212C8AE7390066985C /* UserService.swift in Sources */,
 				BABE1F6E2C81DBA40066985C /* ThreadsTabBarView.swift in Sources */,
 				BABE1F822C81E1990066985C /* SearchView.swift in Sources */,
 				BABE1F632C81ACB80066985C /* LoginView.swift in Sources */,
 				BABE20642C89AE980066985C /* LoginViewModel.swift in Sources */,
 				BABE1F692C81CB440066985C /* RegisterView.swift in Sources */,
 				7E02DBE12C85AC7E0008F274 /* CircularProfileImageView.swift in Sources */,
-				BABE20622C89A99C0066985C /* UserSession.swift in Sources */,
+				BABE20622C89A99C0066985C /* UserSessionManager.swift in Sources */,
 				BABE205E2C899ECE0066985C /* RegisterViewModel.swift in Sources */,
 				7E02DBE32C85ACC40008F274 /* UserCell.swift in Sources */,
 				BABE1F812C81E1990066985C /* ActivityView.swift in Sources */,

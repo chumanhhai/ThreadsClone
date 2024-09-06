@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
-    @EnvironmentObject var userSession: UserSession
+    @EnvironmentObject var userSession: UserSessionManager
     
     var body: some View {
         NavigationStack {

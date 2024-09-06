@@ -16,7 +16,7 @@ class RegisterViewModel: ObservableObject {
     @Published var username = ""
     
     @discardableResult
-    func createUser() async throws -> FirebaseAuth.User {
+    func createUser() async throws -> TCUser {
         let service = AuthService()
         return try await service.register(withEmail: email,
                                           password: password,

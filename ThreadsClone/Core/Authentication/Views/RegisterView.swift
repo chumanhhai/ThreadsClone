@@ -10,7 +10,7 @@ import SwiftUI
 struct RegisterView: View {
     @StateObject var viewModel = RegisterViewModel()
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var userSession: UserSession
+    @EnvironmentObject var userSessionManager: UserSessionManager
     
     var body: some View {
         NavigationStack {
@@ -43,7 +43,8 @@ struct RegisterView: View {
                 Button {
                     Task {
                         do {
-                            try await viewModel.createUser()
+                            let user = try await viewModel.createUser()
+                            userSessionManager.user = user
                         } catch {
                             print("DEBUG: \(error.localizedDescription)")
                         }
