@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @StateObject var viewModel = RegisterViewModel()
+    @StateObject var viewModel: RegisterViewModel
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var userSessionManager: UserSessionManager
+    @ObservedObject var userSessionManager: UserSessionManager
+    
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        _viewModel = StateObject(wrappedValue: RegisterViewModel(withUserSessionManager: userSessionManager))
+        _userSessionManager = ObservedObject(wrappedValue: userSessionManager)
+    }
     
     var body: some View {
         NavigationStack {
@@ -43,8 +48,7 @@ struct RegisterView: View {
                 Button {
                     Task {
                         do {
-                            let user = try await viewModel.createUser()
-                            userSessionManager.user = user
+                            try await viewModel.createUser()
                         } catch {
                             print("DEBUG: \(error.localizedDescription)")
                         }
@@ -76,5 +80,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView(withUserSessionManager: UserSessionManager())
 }

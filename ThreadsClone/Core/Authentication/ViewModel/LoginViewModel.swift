@@ -14,11 +14,16 @@ class LoginViewModel: ObservableObject {
     
     @Published var email = ""
     @Published var password = ""
+    private var userSessionManager: UserSessionManager
     
-    @discardableResult
-    func login() async throws -> FirebaseAuth.User {
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        self.userSessionManager = userSessionManager
+    }
+    
+    func login() async throws {
         let service = AuthService()
-        return try await service.login(withEmail: email,
-                                       password: password)
+        let user =  try await service.login(withEmail: email,
+                                            password: password)
+        userSessionManager.user = user
     }
 }

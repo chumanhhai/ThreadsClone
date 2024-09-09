@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var userSessionManager: UserSessionManager
+    @StateObject var viewModel: ContentViewModel
+    @ObservedObject var userSessionManager: UserSessionManager
+    
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        _viewModel = StateObject(wrappedValue: ContentViewModel(withUserSessionManager: userSessionManager))
+        _userSessionManager = ObservedObject(wrappedValue: userSessionManager)
+    }
     
     var body: some View {
         let isLoggedIn = userSessionManager.userSession != nil
@@ -20,11 +26,11 @@ struct ContentView: View {
                 TCSplashView()
             }
         } else {
-            LoginView()
+            LoginView(withUserSessionManager: userSessionManager)
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(withUserSessionManager: UserSessionManager())
 }

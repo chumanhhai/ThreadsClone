@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TCUser: Codable {
+struct TCUser: Codable, Hashable {
     let id: String
     let email: String
     let fullname: String

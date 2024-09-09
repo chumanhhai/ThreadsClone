@@ -1,5 +1,5 @@
 //
-//  ProfileView.swift
+//  OtherUserProfileView.swift
 //  ThreadsClone
 //
 //  Created by henry on 8/30/24.
@@ -7,36 +7,26 @@
 
 import SwiftUI
 
-
-
-struct ProfileView: View {
-    @EnvironmentObject var userSessionManager: UserSessionManager
-    private var user: TCUser? {
-        userSessionManager.user
-    }
+struct OtherUserProfileView: View {
+    let user: TCUser
     
     var body: some View {
         NavigationStack {
             List {
                 // info section
                 VStack {
-                    if let user = user {
-                        UserProfileHeaderView(user: user)
-                    }
+                    UserProfileHeaderView(user: user)
                     
                     Button(action: {
                         
                     }, label: {
-                        Text("Edit Profile")
+                        Text("Follow")
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                             .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36)
-                            .background(.white)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(lineWidth: 1)
-                            }
+                            .background(.black)
+                            .cornerRadius(8)
                             .padding(.vertical)
                     })
                 }
@@ -56,20 +46,7 @@ struct ProfileView: View {
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .navigationTitle("Profile")
-            .toolbar(content: {
-                ToolbarItem {
-                    Button {
-                        let service = AuthService()
-                        try? service.logout()
-                    } label: {
-                        Text("Sign Out")
-                            .foregroundStyle(.black)
-                            .fontWeight(.semibold)
-                    }
-
-                }
-        })
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

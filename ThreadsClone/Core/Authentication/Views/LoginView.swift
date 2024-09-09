@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject var viewModel = LoginViewModel()
-    @EnvironmentObject var userSession: UserSessionManager
+    @StateObject var viewModel: LoginViewModel
+    @ObservedObject var userSessionManager: UserSessionManager
+    
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        _viewModel = StateObject(wrappedValue: LoginViewModel(withUserSessionManager: userSessionManager))
+        _userSessionManager = ObservedObject(wrappedValue: userSessionManager)
+    }
     
     var body: some View {
         NavigationStack {
@@ -64,7 +69,7 @@ struct LoginView: View {
                     Text("Don't have an account?")
                     
                     NavigationLink {
-                        RegisterView()
+                        RegisterView(withUserSessionManager: userSessionManager)
                             .navigationBarBackButtonHidden(true)
                     } label: {
                         Text("Sign up")
@@ -81,5 +86,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(withUserSessionManager: UserSessionManager())
 }

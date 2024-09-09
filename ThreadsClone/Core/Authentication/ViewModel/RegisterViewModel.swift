@@ -14,13 +14,19 @@ class RegisterViewModel: ObservableObject {
     @Published var password = ""
     @Published var fullname = ""
     @Published var username = ""
+    private var userSessionManager: UserSessionManager
     
-    @discardableResult
-    func createUser() async throws -> TCUser {
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        self.userSessionManager = userSessionManager
+    }
+    
+    @MainActor
+    func createUser() async throws {
         let service = AuthService()
-        return try await service.register(withEmail: email,
-                                          password: password,
-                                          fullname: fullname,
-                                          username: username)
+        let user = try await service.register(withEmail: email,
+                                              password: password,
+                                              fullname: fullname,
+                                              username: username)
+        userSessionManager.user = user
     }
 }

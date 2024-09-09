@@ -8,11 +8,16 @@
 import Foundation
 import FirebaseFirestore
 
-struct UserService {
+class UserService {
     
     func fetchUserData(withUserId id: String) async throws -> TCUser {
         let result = try await Firestore.firestore().collection("users").document(id).getDocument()
         return try result.data(as: TCUser.self)
+    }
+    
+    func fetchUserList() async throws -> [TCUser] {
+        let snapshot = try await Firestore.firestore().collection("users").getDocuments()
+        return snapshot.documents.compactMap({ try? $0.data(as: TCUser.self) })
     }
     
 }

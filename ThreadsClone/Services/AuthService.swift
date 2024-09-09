@@ -11,15 +11,25 @@ import FirebaseFirestore
 
 class AuthService {
     
-    func login(withEmail email: String, password: String) async throws -> FirebaseAuth.User {
+    func login(withEmail email: String, password: String) async throws -> TCUser {
+        // login
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
-        return result.user
+        
+        // fetch user data
+        let service = UserService()
+        let user = try await service.fetchUserData(withUserId: result.user.uid)
+        
+        return user
     }
     
     func register(withEmail email: String, password: String, fullname: String, username: String) async throws -> TCUser {
+        // register
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
+        
+        // upload user data
         let user = TCUser(id: result.user.uid, email: email, fullname: fullname, username: username, bio: nil, profileImage: nil)
         try await uploadUserData(user)
+        
         return user
     }
     

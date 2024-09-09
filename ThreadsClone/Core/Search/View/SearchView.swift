@@ -8,26 +8,47 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchText = ""
+    
+    @StateObject private var viewModel = SearchViewModel()
+    @State private var isFirstTimeEnter = true
+    @EnvironmentObject var userSessionManager: UserSessionManager
     
     var body: some View {
         NavigationStack {
-            List(0...10, id: \.self) { user in
-                VStack(spacing: 8) {
-                    UserCell()
-                        .padding()
-                    Divider()
+            List(viewModel.users, id: \.self) { user in
+                NavigationLink {
+                    OtherUserProfileView(user: user)
+                } label: {
+                    VStack(spacing: 8) {
+                        UserCell(user: user)
+                            .padding()
+                        Divider()
+                    }
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
+
             }
             .listStyle(.plain)
-            .searchable(text: $searchText)
+            .searchable(text: $viewModel.searchText)
             .navigationTitle("Search")
+            .onAppear {
+                if isFirstTimeEnter {
+                    isFirstTimeEnter = false
+                    Task {
+                        do {
+                            try await self.viewModel.fetchUserList(currentUserId: userSessionManager.user?.id ?? "")
+                        } catch {
+                            print("DEBUG: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
     SearchView()
+        .environmentObject(UserSessionManager())
 }

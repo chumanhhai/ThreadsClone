@@ -21,12 +21,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct ThreadsCloneApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var userSession = UserSessionManager()
+    @StateObject var userSessionManager = UserSessionManager()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(userSession)
+            ContentView(withUserSessionManager: userSessionManager)
+                .environmentObject(userSessionManager)
         }
     }
 }
