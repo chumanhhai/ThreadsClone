@@ -11,6 +11,8 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var userSessionManager: UserSessionManager
+    @State var isEditProfilePresented = false
+    @State var selectedProfileImage: Image?
     private var user: TCUser? {
         userSessionManager.user
     }
@@ -25,7 +27,7 @@ struct ProfileView: View {
                     }
                     
                     Button(action: {
-                        
+                        isEditProfilePresented = true
                     }, label: {
                         Text("Edit Profile")
                             .font(.subheadline)
@@ -57,7 +59,7 @@ struct ProfileView: View {
             .listStyle(.plain)
             .scrollIndicators(.hidden)
             .navigationTitle("Profile")
-            .toolbar(content: {
+            .toolbar {
                 ToolbarItem {
                     Button {
                         let service = AuthService()
@@ -69,7 +71,10 @@ struct ProfileView: View {
                     }
 
                 }
-        })
+            }
+            .sheet(isPresented: $isEditProfilePresented) {
+                EditProfileView(selectedImage: $selectedProfileImage)
+            }
         }
     }
 }

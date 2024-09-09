@@ -27,6 +27,7 @@ struct ThreadsCloneApp: App {
         WindowGroup {
             ContentView(withUserSessionManager: userSessionManager)
                 .environmentObject(userSessionManager)
+                .preferredColorScheme(.light) // Force light mode
         }
     }
 }

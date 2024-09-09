@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
     @State private var bio = "Formula 1 driver fo Scheld Ferrari"
     @State private var link = ""
     @State private var isPrivateProfileOn = false
+    @Environment(\.dismiss) var dismiss
+    @State var selectedPhotoItem: PhotosPickerItem?
+    @Binding var selectedImage: Image?
+    @StateObject var viewModel = EditProfileViewModel()
+    @EnvironmentObject var userSessionManager: UserSessionManager
     
     var body: some View {
         NavigationStack {
@@ -26,7 +32,27 @@ struct EditProfileView: View {
                                 .font(.footnote)
                         }
                         Spacer()
-                        CircularProfileImageView()
+                        PhotosPicker(selection: $selectedPhotoItem) {
+                            if let image = selectedImage {
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            } else {
+                                CircularProfileImageView()
+                            }
+                        }
+                        .onChange(of: selectedPhotoItem) { newValue in
+                            Task { @MainActor in
+                                if let item = newValue,
+                                   let data = try? await item.loadTransferable(type: Data.self),
+                                   let uiImage = UIImage(data: data) {
+                                    viewModel.selectedUIImage = uiImage
+                                    selectedImage = Image(uiImage: uiImage)
+                                }
+                            }
+                        }
                     }
                     Divider()
                     VStack(alignment: .leading) {
@@ -64,7 +90,16 @@ struct EditProfileView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        
+                        Task { @MainActor in
+                            do {
+                                guard let id = userSessionManager.user?.id else { return }
+                                let imageUrl = try await viewModel.uploadProfileImage(forUserId: id)
+                                userSessionManager.user?.profileImage = imageUrl
+                            } catch {
+                                print("DEBUG: \(error.localizedDescription)")
+                            }
+                            dismiss()
+                        }
                     }, label: {
                         Text("Done")
                             .fontWeight(.semibold)
@@ -73,7 +108,7 @@ struct EditProfileView: View {
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        
+                        dismiss()
                     }, label: {
                         Text("Cancel")
                             .foregroundStyle(.black)
@@ -82,8 +117,4 @@ struct EditProfileView: View {
             }
         }
     }
-}
-
-#Preview {
-    EditProfileView()
 }

@@ -20,4 +20,8 @@ class UserService {
         return snapshot.documents.compactMap({ try? $0.data(as: TCUser.self) })
     }
     
+    func uploadProfileImage(forUserId userId: String, imageUrl: String) async throws {
+        try await Firestore.firestore().collection("users").document(userId).updateData(["profileImage": imageUrl])
+    }
+
 }

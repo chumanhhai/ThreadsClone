@@ -13,5 +13,5 @@ struct TCUser: Codable, Hashable {
     let fullname: String
     let username: String
     let bio: String?
-    let profileImage: String?
+    var profileImage: String?
 }
