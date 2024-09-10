@@ -40,6 +40,7 @@ class ContentViewModel: ObservableObject {
             initDataDidLoad = true
         } catch {
             print("DEBUG: \(error.localizedDescription)")
+            userSessionManager.userSession = nil
         }
     }
     

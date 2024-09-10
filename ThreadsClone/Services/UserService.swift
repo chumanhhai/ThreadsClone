@@ -23,5 +23,10 @@ class UserService {
     func uploadProfileImage(forUserId userId: String, imageUrl: String) async throws {
         try await Firestore.firestore().collection("users").document(userId).updateData(["profileImage": imageUrl])
     }
+    
+    func updateUserData(_ user: TCUser) async throws {
+        let userData = try Firestore.Encoder().encode(user)
+        try await Firestore.firestore().collection("users").document(user.id).setData(userData)
+    }
 
 }

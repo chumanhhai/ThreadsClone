@@ -9,14 +9,18 @@ import SwiftUI
 import PhotosUI
 
 struct EditProfileView: View {
-    @State private var bio = "Formula 1 driver fo Scheld Ferrari"
-    @State private var link = ""
-    @State private var isPrivateProfileOn = false
+    
     @Environment(\.dismiss) var dismiss
-    @State var selectedPhotoItem: PhotosPickerItem?
-    @Binding var selectedImage: Image?
-    @StateObject var viewModel = EditProfileViewModel()
-    @EnvironmentObject var userSessionManager: UserSessionManager
+    @StateObject var viewModel: EditProfileViewModel
+    @ObservedObject var userSessionManager: UserSessionManager
+    private var user: TCUser? {
+        return userSessionManager.user
+    }
+    
+    init(withUserSessionManager userSessionManager: UserSessionManager) {
+        _viewModel = StateObject(wrappedValue: EditProfileViewModel(withUserSessionManager: userSessionManager))
+        _userSessionManager = ObservedObject(wrappedValue: userSessionManager)
+    }
     
     var body: some View {
         NavigationStack {
@@ -26,31 +30,21 @@ struct EditProfileView: View {
                 VStack {
                     HStack(spacing: 12) {
                         VStack(alignment: .leading) {
-                            Text("Eren Yeager")
+                            Text(user?.fullname ?? "")
                                 .fontWeight(.semibold)
-                            Text("ancestor_titan")
+                            Text(user?.username ?? "")
                                 .font(.footnote)
                         }
                         Spacer()
-                        PhotosPicker(selection: $selectedPhotoItem) {
-                            if let image = selectedImage {
+                        PhotosPicker(selection: $viewModel.selectedPhotoItem) {
+                            if let image = viewModel.selectedImage {
                                 image
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 40, height: 40)
                                     .clipShape(Circle())
                             } else {
-                                CircularProfileImageView()
-                            }
-                        }
-                        .onChange(of: selectedPhotoItem) { newValue in
-                            Task { @MainActor in
-                                if let item = newValue,
-                                   let data = try? await item.loadTransferable(type: Data.self),
-                                   let uiImage = UIImage(data: data) {
-                                    viewModel.selectedUIImage = uiImage
-                                    selectedImage = Image(uiImage: uiImage)
-                                }
+                                CircularProfileImageView(imageUrl: userSessionManager.user?.profileImage)
                             }
                         }
                     }
@@ -58,21 +52,21 @@ struct EditProfileView: View {
                     VStack(alignment: .leading) {
                         Text("Bio")
                             .fontWeight(.semibold)
-                        TextField("Add bio...", text: $bio, axis: .vertical)
+                        TextField("Add bio...", text: $viewModel.bio, axis: .vertical)
                             .font(.footnote)
                     }
                     Divider()
                     VStack(alignment: .leading) {
                         Text("Link")
                             .fontWeight(.semibold)
-                        TextField("Add link...", text: $link, axis: .vertical)
+                        TextField("Add link...", text: $viewModel.link, axis: .vertical)
                             .font(.footnote)
                     }
                     Divider()
                     HStack(spacing: 12) {
                         Text("Private profile")
                             .fontWeight(.semibold)
-                        Toggle("", isOn: $isPrivateProfileOn)
+                        Toggle("", isOn: $viewModel.isPrivateProfileOn)
                     }
                     
                 }
@@ -92,9 +86,7 @@ struct EditProfileView: View {
                     Button(action: {
                         Task { @MainActor in
                             do {
-                                guard let id = userSessionManager.user?.id else { return }
-                                let imageUrl = try await viewModel.uploadProfileImage(forUserId: id)
-                                userSessionManager.user?.profileImage = imageUrl
+                                try await viewModel.updateUserData()
                             } catch {
                                 print("DEBUG: \(error.localizedDescription)")
                             }

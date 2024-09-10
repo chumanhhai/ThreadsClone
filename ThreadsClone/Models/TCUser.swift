@@ -9,9 +9,11 @@ import Foundation
 
 struct TCUser: Codable, Hashable {
     let id: String
-    let email: String
-    let fullname: String
-    let username: String
-    let bio: String?
+    var email: String
+    var fullname: String
+    var username: String
+    var bio: String?
+    var link: String?
+    var isPrivacyProfileOn: Bool = false
     var profileImage: String?
 }

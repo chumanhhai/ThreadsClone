@@ -12,7 +12,6 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var userSessionManager: UserSessionManager
     @State var isEditProfilePresented = false
-    @State var selectedProfileImage: Image?
     private var user: TCUser? {
         userSessionManager.user
     }
@@ -73,7 +72,7 @@ struct ProfileView: View {
                 }
             }
             .sheet(isPresented: $isEditProfilePresented) {
-                EditProfileView(selectedImage: $selectedProfileImage)
+                EditProfileView(withUserSessionManager: userSessionManager)
             }
         }
     }
