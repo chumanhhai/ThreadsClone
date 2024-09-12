@@ -8,23 +8,27 @@
 import SwiftUI
 
 struct CreateThreadView: View {
-    @State private var caption = ""
+    @StateObject var viewModel = CreateThreadViewModel()
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var userSessionManager: UserSessionManager
+    var user: TCUser? {
+        userSessionManager.user
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 HStack(alignment: .top, spacing: 12) {
-                    CircularProfileImageView()
+                    CircularProfileImageView(imageUrl: user?.profileImage)
                     
                     VStack(alignment: .leading) {
-                        Text("Eren Yeager")
+                        Text(user?.fullname ?? "")
                             .fontWeight(.semibold)
                         HStack(alignment: .top) {
-                            TextField("Start a thread", text: $caption, axis: .vertical)
-                            if !caption.isEmpty {
+                            TextField("Start a thread", text: $viewModel.caption, axis: .vertical)
+                            if !viewModel.caption.isEmpty {
                                 Button(action: {
-                                    caption = ""
+                                    viewModel.caption = ""
                                 }, label: {
                                     Image(systemName: "xmark")
                                         .foregroundColor(.gray)
@@ -41,13 +45,20 @@ struct CreateThreadView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        
+                        Task { @MainActor in
+                            do {
+                                try await viewModel.updateThread(forUserId: userSessionManager.user?.id ?? "")
+                            } catch {
+                                print("DEBUG: \(error.localizedDescription)")
+                            }
+                            dismiss()
+                        }
                     }, label: {
                         Text("Post")
                             .fontWeight(.semibold)
-                            .foregroundStyle(caption.isEmpty ? Color(.systemGray) : .black)
+                            .foregroundStyle(viewModel.caption.isEmpty ? Color(.systemGray) : .black)
                     })
-                    .disabled(caption.isEmpty)
+                    .disabled(viewModel.caption.isEmpty)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {

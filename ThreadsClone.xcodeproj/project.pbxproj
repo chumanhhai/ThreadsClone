@@ -47,6 +47,11 @@
 		BABE21452C8EF8380066985C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21442C8EF8380066985C /* ProfileViewModel.swift */; };
 		BABE21472C8F09A60066985C /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21462C8F09A60066985C /* EditProfileViewModel.swift */; };
 		BABE21492C8F0C290066985C /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21482C8F0C290066985C /* ImageUploader.swift */; };
+		BABE214B2C9002100066985C /* TCThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE214A2C9002100066985C /* TCThread.swift */; };
+		BABE214D2C90025E0066985C /* ThreadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE214C2C90025E0066985C /* ThreadService.swift */; };
+		BABE214F2C9002F60066985C /* CreateThreadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE214E2C9002F60066985C /* CreateThreadViewModel.swift */; };
+		BABE21512C900F9B0066985C /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21502C900F9B0066985C /* FeedViewModel.swift */; };
+		BABE21532C903D700066985C /* Timestamp+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABE21522C903D700066985C /* Timestamp+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +92,11 @@
 		BABE21442C8EF8380066985C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		BABE21462C8F09A60066985C /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		BABE21482C8F0C290066985C /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		BABE214A2C9002100066985C /* TCThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCThread.swift; sourceTree = "<group>"; };
+		BABE214C2C90025E0066985C /* ThreadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadService.swift; sourceTree = "<group>"; };
+		BABE214E2C9002F60066985C /* CreateThreadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateThreadViewModel.swift; sourceTree = "<group>"; };
+		BABE21502C900F9B0066985C /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		BABE21522C903D700066985C /* Timestamp+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				7E02DBEC2C8C5B7C0008F274 /* View+Extension.swift */,
+				BABE21522C903D700066985C /* Timestamp+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -218,6 +229,7 @@
 			children = (
 				BABE20612C89A99C0066985C /* UserSessionManager.swift */,
 				BABE21192C8AE27C0066985C /* TCUser.swift */,
+				BABE214A2C9002100066985C /* TCThread.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -228,6 +240,7 @@
 				BABE205F2C899F620066985C /* AuthService.swift */,
 				BABE21202C8AE7390066985C /* UserService.swift */,
 				BABE21482C8F0C290066985C /* ImageUploader.swift */,
+				BABE214C2C90025E0066985C /* ThreadService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -289,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				BABE1F702C81E0E80066985C /* View */,
+				BABE21502C900F9B0066985C /* FeedViewModel.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -312,18 +326,11 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		BABE1F772C81E1990066985C /* View */ = {
-			isa = PBXGroup;
-			children = (
-				BABE1F762C81E1990066985C /* CreateThreadView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		BABE1F782C81E1990066985C /* CreateThread */ = {
 			isa = PBXGroup;
 			children = (
-				BABE1F772C81E1990066985C /* View */,
+				BABE1F762C81E1990066985C /* CreateThreadView.swift */,
+				BABE214E2C9002F60066985C /* CreateThreadViewModel.swift */,
 			);
 			path = CreateThread;
 			sourceTree = "<group>";
@@ -474,20 +481,25 @@
 				7E02DBF42C8C99810008F274 /* UserProfileContentView.swift in Sources */,
 				BABE20602C899F620066985C /* AuthService.swift in Sources */,
 				BABE211F2C8AE3880066985C /* TCSplashView.swift in Sources */,
+				BABE21512C900F9B0066985C /* FeedViewModel.swift in Sources */,
 				BABE211A2C8AE27C0066985C /* TCUser.swift in Sources */,
 				BABE1F7F2C81E1990066985C /* ProfileView.swift in Sources */,
 				BABE21212C8AE7390066985C /* UserService.swift in Sources */,
+				BABE214D2C90025E0066985C /* ThreadService.swift in Sources */,
 				7E02DBE52C8C0C2F0008F274 /* ContentViewModel.swift in Sources */,
 				BABE1F6E2C81DBA40066985C /* ThreadsTabBarView.swift in Sources */,
 				BABE1F822C81E1990066985C /* SearchView.swift in Sources */,
 				BABE21452C8EF8380066985C /* ProfileViewModel.swift in Sources */,
+				BABE214F2C9002F60066985C /* CreateThreadViewModel.swift in Sources */,
 				BABE1F632C81ACB80066985C /* LoginView.swift in Sources */,
 				BABE21492C8F0C290066985C /* ImageUploader.swift in Sources */,
+				BABE21532C903D700066985C /* Timestamp+Extension.swift in Sources */,
 				BABE20642C89AE980066985C /* LoginViewModel.swift in Sources */,
 				BABE1F692C81CB440066985C /* RegisterView.swift in Sources */,
 				7E02DBF02C8C98850008F274 /* OtherUserProfileView.swift in Sources */,
 				7E02DBEB2C8C5AA50008F274 /* PreviewMockData.swift in Sources */,
 				7E02DBE12C85AC7E0008F274 /* CircularProfileImageView.swift in Sources */,
+				BABE214B2C9002100066985C /* TCThread.swift in Sources */,
 				7E02DBED2C8C5B7C0008F274 /* View+Extension.swift in Sources */,
 				7E02DBF22C8C989B0008F274 /* UserProfileHeaderView.swift in Sources */,
 				BABE20622C89A99C0066985C /* UserSessionManager.swift in Sources */,

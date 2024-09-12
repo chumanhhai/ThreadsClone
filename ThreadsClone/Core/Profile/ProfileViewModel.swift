@@ -11,28 +11,14 @@ import SwiftUI
 import Combine
 
 class ProfileViewModel: ObservableObject {
+    @Published var contentFilter: ProfileContentFilter = .thread
+    @Published var threads: [TCThread] = []
     
-//    @Published var selectedPhotoItem: PhotosPickerItem?
-//    @Published var selectedProfileImage: Image?
-//    private var cancellables = Set<AnyCancellable>()
-    
-    init() {
-        setupSubscribers()
-    }
-    
-    private func setupSubscribers() {
-//        $selectedPhotoItem
-//            .receive(on: DispatchQueue.main)
-//            .sink { item in
-//                Task { @MainActor [weak self] in
-//                    if let item = item,
-//                       let data = try? await item.loadTransferable(type: Data.self),
-//                       let uiImage = UIImage(data: data) {
-//                        self?.selectedProfileImage = Image(uiImage: uiImage)
-//                    }
-//                }
-//            }
-//            .store(in: &cancellables)
+    @MainActor
+    func fetchThreads(forUser user: TCUser) async throws {
+        let threadService = ThreadService()
+        let userService = UserService()
+        threads = try await threadService.fetchThreads(forUser: user)
     }
     
 }

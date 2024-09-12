@@ -12,6 +12,8 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var userSessionManager: UserSessionManager
     @State var isEditProfilePresented = false
+    @StateObject var viewModel = ProfileViewModel()
+    @State var isFirstTimeAppear = true
     private var user: TCUser? {
         userSessionManager.user
     }
@@ -45,19 +47,32 @@ struct ProfileView: View {
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
                 
-                UserProfileContentView()
+                UserProfileContentView(contentFilter: $viewModel.contentFilter)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
                 
-                ForEach(0 ... 10, id: \.self) { thread in
-                    ThreadCell()
+                switch viewModel.contentFilter {
+                case .thread:
+                    ForEach(viewModel.threads, id: \.self) { thread in
+                        ThreadCell(thread: thread)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                    }
+                case .reply:
+                    Text("No results")
+                        .font(.footnote)
+                        .fontWeight(.semibold)
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
+                        .padding(.top)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
+                
+                
             }
             .listStyle(.plain)
             .scrollIndicators(.hidden)
-            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem {
                     Button {
@@ -73,6 +88,20 @@ struct ProfileView: View {
             }
             .sheet(isPresented: $isEditProfilePresented) {
                 EditProfileView(withUserSessionManager: userSessionManager)
+            }
+            .onAppear {
+                if isFirstTimeAppear {
+                    isFirstTimeAppear = false
+                    Task {
+                        do {
+                            if let user = user {
+                                try await viewModel.fetchThreads(forUser: user)
+                            }
+                        } catch {
+                            print("DEBUG: \(error.localizedDescription)")
+                        }
+                    }
+                }
             }
         }
     }

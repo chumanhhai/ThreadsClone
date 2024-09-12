@@ -26,7 +26,7 @@ enum ProfileContentFilter: Int, CaseIterable, Identifiable {
 
 struct UserProfileContentView: View {
     
-    @State private var selectedContentFilter: ProfileContentFilter = .thread
+    @Binding var contentFilter: ProfileContentFilter
     @Namespace var underlineAnimation
     
     var body: some View {
@@ -35,10 +35,10 @@ struct UserProfileContentView: View {
                 ForEach(ProfileContentFilter.allCases, id: \.self) { item in
                     Button(action: {
                         withAnimation {
-                            selectedContentFilter = item
+                            contentFilter = item
                         }
                     }, label: {
-                        let isSelected = selectedContentFilter == item
+                        let isSelected = contentFilter == item
                         VStack(spacing: 8) {
                             Text(item.title)
                                 .foregroundStyle(.black)
@@ -67,5 +67,6 @@ struct UserProfileContentView: View {
 }
 
 #Preview {
-    UserProfileContentView()
+    @State var filter: ProfileContentFilter = .thread
+    return UserProfileContentView(contentFilter: $filter)
 }

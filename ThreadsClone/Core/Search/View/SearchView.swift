@@ -16,17 +16,23 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             List(viewModel.users, id: \.self) { user in
-                NavigationLink {
-                    OtherUserProfileView(user: user)
-                } label: {
+                ZStack {
                     VStack(spacing: 8) {
                         UserCell(user: user)
                             .padding()
                         Divider()
                     }
+                    NavigationLink {
+                        OtherUserProfileView(user: user)
+                    } label: {
+                        EmptyView()
+                    }
+                    .opacity(0)
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
+                
+                
 
             }
             .listStyle(.plain)

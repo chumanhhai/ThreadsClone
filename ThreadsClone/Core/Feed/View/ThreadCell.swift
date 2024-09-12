@@ -8,28 +8,26 @@
 import SwiftUI
 
 struct ThreadCell: View {
+    let thread: TCThread
+    
     var body: some View {
         VStack {
             HStack(alignment: .top, spacing: 12) {
-                Image("img_handsome")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                CircularProfileImageView(imageUrl: thread.user?.profileImage)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
-                        Text("Eren Yeager")
+                        Text(thread.user?.fullname ?? "")
                             .font(.footnote)
                             .fontWeight(.semibold)
                         Spacer()
-                        Text("10m")
+                        Text(thread.createdAt.toAgoFormattedString())
                             .font(.caption)
                             .foregroundColor(Color(.systemGray3))
                         Image(systemName: "ellipsis")
                             .foregroundColor(Color(.darkGray))
                     }
-                    Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s")
+                    Text(thread.caption)
                         .font(.footnote)
                     HStack(spacing: 8) {
                         Button(action: {
@@ -68,5 +66,5 @@ struct ThreadCell: View {
 }
 
 #Preview {
-    ThreadCell()
+    ThreadCell(thread: PreviewMockData.thread)
 }
